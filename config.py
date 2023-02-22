@@ -31,8 +31,10 @@ class DevConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     WTF_CSRF_ENABLED = True
+    #SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI') or \
+    #                          'sqlite:///' + os.path.join(basedir, 'site.db')
     SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI') or \
-                              'sqlite:///' + os.path.join(basedir, 'site.db')
+                               'mysql://root:vladnextcertifiedg1412///@localhost/shop'
     RECAPTCHA_PUBLIC_KEY = "6LcI6yEjAAAAALFm0sXu5fJS7yPfLt98Gz9VMCFn"
     RECAPTCHA_PRIVATE_KEY = "6LcI6yEjAAAAADhd7NpdvF6qD-8wYkpp4WNbGMnD"
     MAIL_SERVER = 'smtp.gmail.com'
