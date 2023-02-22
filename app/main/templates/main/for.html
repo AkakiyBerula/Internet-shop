@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ data }} {% endblock %}
+
+{% block content %} 
+
+{% for form in forms %}
+
+<div class="card text-center">
+    <h1>Лабораторна робота №3</h1>
+    <h3>{{ title }}</h3>
+    <div class="card-header ">
+        <h3>Form №{{ loop.index }}</h3>
+    </div>
+    <div class = "card-body">
+        <p>Name: {{ form.name }}</p>
+        <p>Surname: {{ form.surname }}</p>
+        <p>Birth date: {{ form.dateborn }}</p>
+        <p>Group: {{ form.group }}</p>
+        <p>Email: {{ form.email }}</p>
+        <p>Coorporate email: {{ form.coorp_email }}</p>
+        <p>{%set me = form.name%} {{me}}</p>
+    </div>
+</div>
+
+{% endfor %}
+
+{% include "footer.html" %}
+
+{% endblock %}

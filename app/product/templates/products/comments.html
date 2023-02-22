@@ -1,0 +1,48 @@
+{% from "_render_field.html" import render_field_check, render_field_group, flash_message %}
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+<div class = "container" style="margin-left: 15%; width: 70%;">
+    <div class = "text-center"><h3 >Панель комментарів</h3></div>
+      <div class="be-comment-block comments">
+        {% for rating, user, product in ratings_list %}
+        <div class="be-comment">
+            <div class="be-img-comment">	
+                <a href="{{ url_for('auth.account_info', id = user.id)  }}">
+                    <img src="{{ url_for('static', filename='profile_pics/' + user.image_file)  }}" alt="" class="be-ava-comment">
+                </a>
+            </div>
+            <div class="be-comment-content">
+                    <span class="be-comment-name">
+                        <a href="{{ url_for('auth.account_info', id = user.id)  }}"> {{ user.username }} </a>
+                        написав про
+                        <a href="{{ url_for('products.product_detail_info', id = product.id)  }}"> {{ product.name }} </a>
+                    </span>
+                    <span class="be-comment-time">
+                        <i class="fa fa-clock-o"></i>
+                         {{rating.date.strftime('%d/%m/%Y')}}
+                    </span>
+    
+                <p class="be-comment-text">
+                    {% if rating.rating != -1.0 %}
+                                <b class = "darkgreen">[{{ rating.rating }}]: </b>
+                            {% else %}
+                                <b class = "gray">[No rating]</b>
+                            {% endif %}  
+                    {{ rating.comment }}
+                </p>
+            </div>
+            {% if current_user.usertype.name in ['Admin', 'Moderator'] %}
+                <div style = "width: 20%; margin-left: 80%">
+                <a href="{{ url_for('products.delete_rate', id = product.id) }}"
+                        
+                        onclick="return confirm('Ви впевнені, що бажаєте видалити відгук?')"><button class="button-delete">Видалити відгук</button></a>
+                </div>
+            {% endif %}
+            
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

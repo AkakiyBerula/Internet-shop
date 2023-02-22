@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ data }} {% endblock %}
+
+{% block content %} 
+
+<h1 class = "text-center">Лабораторна робота №3</h1>
+
+{% for number in numbers %}
+
+<div class="card text-center">
+    
+    <h3>{{ title }}</h3>
+    <div class="card-header ">
+        <h3>Number {{ loop.index }}</h3>
+    </div>
+    <div class = "card-body">
+        <p>Value: <span class = "font-weight-bold font-italic">{{ number }}</span></p>
+        {% if number < 0 %}
+            <p>Число від'ємне</p>
+        {% elif number > 0 %}
+            <p>Число додатнє</p>
+        {% else %}
+            <p>Число дорівнює нулю</p>
+        {% endif %}
+        {% if number == 0 %}
+            <p>Число ні парне, ні непарне</p>
+        {% elif number % 2 == 0 %}
+            <p>Число парне</p>
+        {% else %}
+            <p>Число непарне</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endfor %}
+
+{% include "footer.html" %}
+
+{% endblock %}

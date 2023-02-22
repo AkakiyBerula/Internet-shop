@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% from "_render_field.html" import render_field_group, render_field_check, flash_message %}
+
+{% block content %} 
+        <div class = "container"  style="width: 40%; margin-left: 30%">
+            <h1 class = "text-center">Join Today, LMAO</h1>
+            <form method="POST" action="{{ url_for('auth.register')}}">
+                {{ form.csrf_token }}
+                {{ flash_message() }}
+                {{ render_field_group( form.username ) }}
+                {{ render_field_group( form.name ) }}
+                {{ render_field_group( form.lastname ) }}
+                {{ render_field_group( form.email ) }}
+                {{ render_field_group( form.number_phone )}}
+                {{ render_field_group( form.password ) }}
+                {{ render_field_group( form.confirm_password) }}
+                {{ render_field_group( form.captcha_user ) }}
+                <div class = "form-outline mb-4" style = "margin-top: 20px;" class_="form-control col-xs-3">
+                    <img src = "../static/img/{{ captcha_image }}" vspace = "20px">
+                </div>
+                {{ form.submit(class_ ="btn btn-success", style = "margin-top: 20px;") }}
+                {{ flash_message() }}
+            </form>
+        </div>
+{% endblock %}

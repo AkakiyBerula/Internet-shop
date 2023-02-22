@@ -1,0 +1,151 @@
+<div class="utility-nav d-none d-md-block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p class="small"><i class="bx bx-envelope"></i> akakiy_berula@gmail.com | <i class="bx bx-phone"></i> +91-9876543210
+          </p>
+        </div>
+  
+        <div class="col-12 col-md-6 text-right">
+          <p class="small">Best products in all world!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <nav class="navbar navbar-expand-md navbar-light bg-light main-menu" style="box-shadow:none">
+    <div class="container">
+  
+      <button type="button" id="sidebarCollapse" class="btn btn-link d-block d-md-none">
+                  <i class="bx bx-menu icon-single"></i>
+              </button>
+  
+      <a class="navbar-brand" href="#">
+        <h4 class="font-weight-bold title-style">Berula Exotic Shop</h4>
+      </a>
+  
+      <ul class="navbar-nav ml-auto d-block d-md-none">
+        <li class="nav-item">
+          <a class="btn btn-link" href="#"><i class="bx bxs-cart icon-single"></i> <span class="badge badge-danger">3</span></a>
+        </li>
+      </ul>
+  
+      <div class="collapse navbar-collapse">
+  
+        <ul class="navbar-nav">
+          
+          {% if not current_user.is_authenticated %}
+          <li class="nav-item ml-md-2">
+            <a class="btn btn-primary" href="{{url_for('auth.login')}}"><i class="bx bxs-user-circle mr-1"></i> Log In </a>
+          </li>
+          <li class="nav-item ml-md-2">
+            <a class="btn btn-primary" href="{{url_for('auth.register')}}"><i class="bx bxs-user-circle mr-1"></i> Sign In </a>
+          </li>
+          {% else %}
+          <li class="nav-item ml-md-2">
+            <a class="btn btn-primary" href="{{url_for('auth.account_info', id = current_user.id)}}"><i class="bx bxs-user-circle mr-1"></i> Your Account </a>
+          </li>
+          <li class="nav-item ml-md-2">
+            <a class="btn btn-primary" href="{{url_for('auth.logout')}}"><i class="bx bxs-user-circle mr-1"></i> Log Out </a>
+          </li>
+          {% endif %}
+          
+        </ul>
+      </div>
+  
+    </div>
+  </nav>
+  
+  <nav class="navbar navbar-expand-md navbar-light bg-light sub-menu">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Про нас</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('products.product_view_info')}}">Товари</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('posts.view_posts')}}">Статті</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Товари за категоріями
+                          </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 1) }}">Продукти мексиканської кухні</a>
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 2) }}">Солодощі і закуски</a>
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 3) }}">Напої</a>
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 4) }}">Соуси</a>
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 5) }}">Рамен, продукти швидкого харчування</a>
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 6) }}">Спеції</a>
+              <a class="dropdown-item" href="{{ url_for('products.product_info_type', type = 7) }}">Консервація</a>
+            </div>
+          </li>
+          {% if current_user.is_authenticated and current_user.usertype.name in ['Admin', 'Moderator'] %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ url_for }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Панель модератора
+                          </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{url_for('auth.users')}}">Користувачі</a>
+              <a class="dropdown-item" href="{{url_for('products.type_info')}}">Типи товарів</a>
+              <a class="dropdown-item" href="{{url_for('posts.categories_list')}}">Категорії постів</a>
+            </div>
+          </li>
+          {% endif %}
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('products.comments_view') }}">База комментарів</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">Контакти</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="search-bar d-block d-md-none">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <form class="form-inline mb-3 mx-auto">
+            <input class="form-control" type="search" placeholder="Search for products..." aria-label="Search">
+            <button class="btn btn-success" type="submit"><i class="bx bx-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-10 pl-0">
+            <a class="btn btn-primary" href="#"><i class="bx bxs-user-circle mr-1"></i> Log In</a>
+          </div>
+  
+          <div class="col-2 text-left">
+            <button type="button" id="sidebarCollapseX" class="btn btn-link">
+                              <i class="bx bx-x icon-single"></i>
+                          </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    
+  
+    <ul class="social-icons">
+      <li><a href="#" target="_blank" title=""><i class="bx bxl-facebook-square"></i></a></li>
+      <li><a href="#" target="_blank" title=""><i class="bx bxl-twitter"></i></a></li>
+      <li><a href="#" target="_blank" title=""><i class="bx bxl-linkedin"></i></a></li>
+      <li><a href="#" target="_blank" title=""><i class="bx bxl-instagram"></i></a></li>
+    </ul>
+  
+  </nav>

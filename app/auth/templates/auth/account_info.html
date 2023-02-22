@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% from "_render_field.html" import render_field_group, flash_message %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <div class="content-section align-center" style ="margin-left: 10%; width: 80%; text-align: center;">
+        <div class="media">
+            <img class="rounded-circle account-img" alt = "Встановіть аватар" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
+            <div class="media-body">
+                <h2 class="account-heading"> {{ user.user }} </h2>
+                <p class="text-secondary"> Повне ім'я: {{ user.name }}  {{ user.lastname }}</p>
+                {% if not user.usertype.name == "User"%}
+                <p class="text-secondary gray"> {{ user.usertype.name }}</p>
+                {% endif %}
+                <p class="text-secondary"> Інформація про користувача: </p>
+                {% if current_user.id == user.id %}
+                <p class="text-secondary">Останній раз у мережі: {{ user.last_date.strftime('%d %B %Y - %H:%M:%S') }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div style = "text-align: center; padding-left: 15%; padding-right: 15%; ">
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0 center-block">
+                        <p>{{ user.about_me }}</p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                    {% if user.id == current_user.id  %}
+                        <a href = "{{ url_for('auth.account') }}">
+                            <div class="btn btn-outline btn-primary" class="justify-content-center">Оновити інформацію</div>  
+                        </a>
+
+                        <a href = "{{ url_for('auth.reset_password') }}">
+                            <div class="btn btn-outline btn-primary" class="justify-content-center">Змінити пароль</div>  
+                        </a>  
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="be-comment-block comments">
+                    {% for rating, product in ratings_list %}
+                    <div class="be-comment">
+                        <div class="be-img-comment">	
+                            <a href="{{ url_for('auth.account_info', id = user.id)  }}">
+                                <img src="{{ url_for('static', filename='product_pics/' + product.image_file)  }}" alt="" class="be-ava-comment">
+                            </a>
+                        </div>
+                        <div class="be-comment-content">
+                                    <a href="{{ url_for('products.product_detail_info', id = product.id)  }}"> {{ product.name }} </a>
+                                </span>
+                                <span class="be-comment-time">
+                                    <i class="fa fa-clock-o"></i>
+                                     {{rating.date.strftime('%d/%m/%Y')}}
+                                </span>
+                
+                            <p class="be-comment-text">
+                                {% if rating.rating != -1.0 %}
+                                            <b class = "darkgreen">[{{ rating.rating }}]: </b>
+                                        {% else %}
+                                            <b class = "gray">[No rating]</b>
+                                        {% endif %}  
+                                {{ rating.comment }}
+                            </p>
+                        </div>
+                        {% if current_user.usertype.name in ['Admin', 'Moderator'] %}
+                            <div style = "width: 20%; margin-left: 80%">
+                            <a href="{{ url_for('products.delete_rate', id = product.id) }}"
+                                    
+                                    onclick="return confirm('Ви впевнені, що бажаєте видалити відгук?')"><button class="button-delete">Видалити відгук</button></a>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                    {% endfor %}
+                </div>
+        </div>
+{% endblock %}

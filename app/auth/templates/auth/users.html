@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% from "_render_field.html" import flash_message %}
+
+{% block content %} 
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <div class = "container text-center" style="width: 40%; margin-left: 30%">
+            <h1>Список користувачів</h1>
+            {% if flag == True %}
+                <table>
+                    <tr>
+                        <th>
+                            <b >Ім'я користувача</b>
+                        </th>
+                        <th>
+                            <b>Електронна пошта</b>
+                        </th>
+                        <th>
+                            <b>Статус користувача</b>
+                        </th>
+                    </tr>
+                    {% for user in all_users %}
+                    <tr>
+                        <td>
+                            <b><a href = "{{ url_for('auth.account_info', id = user.id)}}"> {{ user.username }} </a></b>
+                        </td>
+                        <td>
+                            {{ user.email }}
+                        </td> 
+                        <td>
+                            {{ user.usertype.name }}
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                </table>
+        </div>
+            {% endif %}
+            <div class = "container" style="width: 40%; margin-left: 30%">{{ flash_message() }}</div>
+ {% endblock %}

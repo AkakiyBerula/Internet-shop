@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% from "_render_field.html" import render_field_group, render_field_check, flash_message %}
+
+{% block content %} 
+        <div class = "container" style="width: 50%; margin-left: 25%">
+            <h1 class = "text-center">Log In!</h1>
+            <form method="POST" action="{{ url_for('auth.login')}}">
+                {{ form.csrf_token }}
+                {{ render_field_group( form.email ) }}
+                {{ render_field_group( form.password ) }}
+                {{ render_field_check( form.remember ) }}
+                <p><a href = "{{url_for('auth.restore_account')}}">Forget password</a></p>
+                {{ form.submit(class_ ="btn btn-outline btn-primary", style = "margin-top: 10px;") }}
+                {{ flash_message() }}
+            </form>
+        </div>
+{% endblock %}

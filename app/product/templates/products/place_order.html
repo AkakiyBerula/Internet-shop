@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% from "_render_field.html" import render_field_group, flash_message %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <div class="content-section align-center" style ="margin-left: 10%; width: 80%; text-align: center;">
+        <div class="media">
+            <img src="{{ url_for('static', filename='product_pics/' + product.image_file)  }}">
+            <div class="media-body">
+                <h2 class="account-heading"> {{ product.name }} </h2>
+                <p class="text-secondary"></p>
+            </div>
+        </div>
+        <div style = "text-align: center; padding-left: 25%; padding-right: 25%; ">
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0 center-block">
+                        <p> Вартість (1 шт.) {{ product.price }} грн.</p>
+                    </div>
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Кількість на складі: {{ product.variety }}
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Замовник: {{ current_user.username }}
+                    </div>
+                    
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Повне ім'я замовника: {{ current_user.name }} {{ current_user.lastname }}
+                    </div>
+                    
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Номер телефону замовника: {{ current_user.number_phone }}
+                    </div>
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Загальна вартість: <span class = "darkgreen">{{ amount }} грн.</span> 
+                    </div>
+                </div> 
+                <h4 class = "text-center">Підтвердження покупки</h4>
+                <form method="POST" action="{{ url_for('products.buy_product', id = product_id)}}">
+                    {{ form.csrf_token }}
+                    {{ render_field_group( form.counter ) }}
+                    {{ render_field_group( form.address ) }}
+                    {{ form.submit(class_ ="btn btn-outline btn-primary", style = "margin-top: 10px;") }}
+                    {{ flash_message() }}
+                </form>                   
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}

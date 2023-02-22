@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %} 
+        <div class = "container">
+            <h1 class = "text-center">Join Today</h1>
+            <div class ="container mt-4" style = "width: 100%; padding-top: 10px;">
+                    <div class = "alert alert-error alert-dismissible" role="alert" style = "background-color: rgba(212, 0, 0, 0.3); text-align: center">
+                        Кількість спроб вичерпано! Спробуйте пізніше.
+                        <button type = "button" class = "close" data-dismiss="alert" aria-label="Close">
+                        </button>
+                    </div>
+            </div>
+        </div>
+{% endblock %}

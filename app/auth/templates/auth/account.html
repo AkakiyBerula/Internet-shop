@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% from "_render_field.html" import render_field_group, flash_message, render_field_textarea %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <div class = "container" style="width: 80%; margin-left: 10%">{{ flash_message() }}</div>
+    <div class="content-section align-center" style ="margin-left: 10%; width: 80%; text-align: center;">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
+            <div class="media-body">
+                <h2 class="account-heading"> {{ current_user.username }} </h2>
+                <p class="text-secondary"> {{ current_user.email }} </p>
+                <p class="text-secondary">Last seen: {{ current_user.last_date.strftime('%d %B %Y - %H:%M:%S') }}</p>
+            </div>
+        </div>
+        <div style = "text-align: center; padding-left: 25%; padding-right: 25%; ">
+            <form class="mx-1 mx-md-4" method="POST" enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0 center-block">
+                        {{ render_field_group(form.username) }}
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0 center-block">
+                        {{ render_field_group(form.name) }}
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0 center-block">
+                        {{ render_field_group(form.lastname) }}
+                    </div>
+                </div>
+    
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        {{ render_field_group(form.email) }}
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        {{ render_field_group(form.number_phone) }}
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row align-items-start mb-4">
+                    
+                    <div class="form-outline flex-fill mb-0">
+                        {{ render_field_textarea(form.about_me) }}
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <a href = "{{ url_for('auth.reset_password') }}">
+                        <div class="btn btn-outline btn-primary" class="justify-content-center">Оновити інформацію</div>  </a>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.error %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    {{ form.submit(class_ ="btn btn-outline btn-primary", style = "margin-top: 10px;") }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

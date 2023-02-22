@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% from "_render_field.html" import render_field_group, flash_message, render_field_textarea  %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <div class="content-section align-center" style ="margin-left: 10%; width: 80%; text-align: center;">
+        <div class="media">
+            <img src="{{ url_for('static', filename='product_pics/' + product.image_file)  }}">
+            <div class="media-body">
+                <h2 class="account-heading"> {{ product.name }} </h2>
+                <p class="text-secondary"></p>
+            </div>
+        </div>
+        <div style = "text-align: center; padding-left: 10%; padding-right: 10%; ">
+                <div class="d-flex align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0 center-block">
+                        <p>{{ product.info }}</p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Середній рейтинг: 
+                        <span class = "average_rating">
+                            {% if res_rating != None %}
+                                {{ res_rating }}
+                            {% else %}
+                                <span class = "no_rating">Без рейтинга</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Вартість: <span class = "darkgreen">{{ product.price }}  грн</span>
+                    </div>
+                    
+                </div>
+                <div class="d-flex flex-row align-items-start mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                        Тип: {{ type.type }}
+                    </div>
+                    
+                </div>
+                
+                <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                    {% if current_user.is_authenticated and current_user.usertype in ["Admin", "Moderator"] %}
+                        <a href="{{url_for('products.edit_product', id = product.id)}}" class="btn btn-warning btn-xs">Редагувати</a>
+                        <a href="{{url_for('products.remove_product', id = product.id)}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Видалити</a>
+                    {% endif %}
+                    </a>
+                    </div>
+                </div>
+                {% if current_user.is_authenticated %}
+                <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                    
+                        <a href="{{url_for('products.make_order', id = product.id)}}" class="btn btn-warning btn-xs">Купити товар</a>
+                        <a href="{{ url_for('products.product_view_info', id = current_user.id) }}">
+                        <p class="btn btn-primary btn-xs" style = "margin-top: 17px">Назад</p>
+                    </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% if current_user.is_authenticated %}
+            <form method="POST" enctype="multipart/form-data">
+                    {{ rateform.csrf_token }}
+                    <div class="container", style="margin-left: 30%; width: 40%;">
+                        <div>
+                            {{ render_field_group(rateform.rate) }}
+                            {{ render_field_textarea(rateform.comment) }}
+                            {{ rateform.submit(class_ ="btn btn-success", style = "margin-top: 20px;") }}
+                            {{ flash_message() }}
+                        </div>
+                    </div>
+                
+            </form>
+            {% endif %}
+                {% if your_rating != None and current_user.is_authenticated %}
+                <div class="be-comment-block my-comment">
+                    <div class="be-comment">
+                        <div class="be-img-comment">	
+                            <a href="{{ url_for('auth.account_info', id = current_user.id)  }}">
+                                <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file)  }}" alt="" class="be-ava-comment">
+                            </a>
+                        </div>
+                        <div class="be-comment-content">
+                                <span class="be-comment-name">
+                                    <a href="{{ url_for('auth.account_info', id = current_user.id)  }}"> {{ current_user.username }} </a>
+                                </span>
+                                <span class="be-comment-time">
+                                    <i class="fa fa-clock-o"></i>
+                                     {{your_rating.date.strftime('%d/%m/%Y')}}
+                                </span>
+                
+                            <p class="be-comment-text">
+                                {% if your_rating.rating != -1.0 %}
+                                            <b class = "darkgreen">[{{ your_rating.rating }}]: </b>
+                                        {% else %}
+                                            <b class = "gray">[No rating]</b>
+                                        {% endif %}  
+                                {{ your_rating.comment }}
+                            </p>
+                        </div>
+                        {% if current_user.usertype.name in ['Admin', 'Moderator'] %}
+                            <div style = "width: 20%; margin-left: 80%">
+                            <a href="{{ url_for('products.delete_rate', id = product.id) }}"
+                                    
+                                    onclick="return confirm('Ви впевнені, що бажаєте видалити відгук?')"><button class="button-delete">Видалити відгук</button></a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="be-comment-block comments">
+                    {% for rating, user in ratings_list %}
+                    <div class="be-comment">
+                        <div class="be-img-comment">	
+                            <a href="{{ url_for('auth.account_info', id = user.id)  }}">
+                                <img src="{{ url_for('static', filename='profile_pics/' + user.image_file)  }}" alt="" class="be-ava-comment">
+                            </a>
+                        </div>
+                        <div class="be-comment-content">
+                                <span class="be-comment-name">
+                                    <a href="{{ url_for('auth.account_info', id = user.id)  }}"> {{ user.username }} </a>
+                                </span>
+                                <span class="be-comment-time">
+                                    <i class="fa fa-clock-o"></i>
+                                     {{rating.date.strftime('%d/%m/%Y')}}
+                                </span>
+                
+                            <p class="be-comment-text">
+                                {% if rating.rating != -1.0 %}
+                                            <b class = "darkgreen">[{{ rating.rating }}]: </b>
+                                        {% else %}
+                                            <b class = "gray">[No rating]</b>
+                                        {% endif %}  
+                                {{ rating.comment }}
+                            </p>
+                        </div>
+                        
+                        {% if current_user.is_authenticated and current_user.usertype.name in ['Admin', 'Moderator'] %}
+                            <div style = "width: 20%; margin-left: 80%">
+                            <a href="{{ url_for('products.delete_rate', id = product.id) }}"
+                                    
+                                    onclick="return confirm('Ви впевнені, що бажаєте видалити відгук?')"><button class="button-delete">Видалити відгук</button></a>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

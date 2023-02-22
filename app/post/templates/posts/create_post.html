@@ -1,0 +1,25 @@
+{% from "_render_field.html" import render_field_check, render_field_group, flash_message, render_field_textarea %}
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+<div class = "container" style="margin-left: 30%; width: 40%;">
+    <div class = "text-center"><h3 >Новий пост</h3></div>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ render_field_group(form.title) }}
+        {{ render_field_textarea(form.text) }}
+        {{ render_field_group(form.picture) }}
+        {{ render_field_group(form.category) }}
+        {{ render_field_group(form.type) }}
+        {{ render_field_check( form.enabled ) }}
+        {{ form.submit(class_ ="btn btn-success", style = "margin-top: 20px;") }}
+        {{ flash_message() }}
+        <a href="{{url_for('posts.view_posts')}}" class="btn btn-primary btn-xs" style = "margin-top: 20px; margin-left: 10px;">Назад</a>
+    </form>
+</div>
+
+
+
+
+{% endblock %}

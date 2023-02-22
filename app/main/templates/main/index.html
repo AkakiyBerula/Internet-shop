@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Main Page {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <span class = text-center>
+        <h1>Лабораторна робота Flask</h1>
+        <p class = "font-italic text-center">Виконав Дякун Владислав (ІПЗ-31)</p>
+        <h2>{{ title }}</h2>
+        <h3>{{ subtitle }}</h3>
+    </span>
+    <ul class="justify-content-center">
+        <li>Main Page - стартова сторінка</li>
+        <li>Users - база даних зареєстрованих користувачів</li>
+        <li>Basic Form - початкова форма для перевірки авторизації(лаб 4)</li>
+        <li>Cabinet - реєстрація екзаменаційної форми(лаб 5-6)</li>
+        <li>Login - авторизація на сайт</li>
+        <li>Register - реєстрація на сайт</li>
+        <li>Account - персональний аккаунт користувача</li>
+        <li>Logout - вихід зі сторінки</li>
+    </ul>
+</div>
+
+{% include "footer.html" %}
+
+{% endblock %}

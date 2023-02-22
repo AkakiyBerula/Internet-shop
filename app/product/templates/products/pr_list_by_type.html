@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% from "_render_field.html" import render_field_group, render_field_check, flash_message %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<div class="container">
+    <div class="row">
+        <span class = "main">
+            <h2>Товари</h2>
+            {% if current_user.is_authenticated and current_user.usertype.name in ['Admin', 'Moderator'] %}
+            <a href="{{url_for('products.add_product')}}"><button type="button"  class="btn btn-success float-right">Добавити новий товар</button> </a>
+            {% endif %}
+        </span>
+        <div class = "container" style="width: 50%; margin-left: 25%">
+            <form method="POST" action="{{ url_for('products.product_info_type', type = type_id)}}">
+                {{ form.csrf_token }}
+                {{ render_field_group( form.sort_field ) }}
+                {{ form.submit(class_ ="btn btn-outline btn-primary", style = "margin-top: 10px;") }}
+                {{ flash_message() }}
+            </form>
+        </div>
+        
+        {% for product in products_list %}
+        <div class="col-md-4 my_padding">
+            <div class="my_block">
+                <div class="text-center">
+                    <img src="{{ url_for('static', filename='product_pics/' + product.image_file) }}">
+                </div>
+                <div class="blog-content">
+                    <h4><a href="{{ url_for('products.product_detail_info', id= product.id) }}">{{ product.name }}</a></h4>
+                    <div class="btn-group btn-toggle">
+                        {% if product.is_on_storage %}
+                        <b><span class = "darkgreen">В наявності</span></b>
+                        {% else %}  
+                        <b><span class = "red">Немає на складі</span></b>
+                        {% endif %}
+                    </div>
+                    
+                    <p>{{ product.type.value }}</p>
+                    <p class = "darkgreen">{{ product.price }} грн.</p>
+                    <p>{{ product.info[:20] + '...' }}</p>
+                    <div class="btn-group btn-toggle">
+                        <a href="{{url_for('products.product_detail_info',  id = product.id  )}}" class="btn btn-round btn-info">Детальніше</a>
+                    </div>
+                </div>
+                <span class="blog-date">Created: {{ product.date.strftime('%m/%d/%Y - %H:%M') }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
